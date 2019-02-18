@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Todo Lijst</h1>
+
+        <label for="txtTitle">Title</label>
+        <br>
+        <input type="text" name="txtTitle" id="txtTitle">
+        <br>
+        <label for="txtToDo">ToDo</label>
+        <br>
+        <textarea name="txtToDo" id="txtToDo" cols="30" rows="10"></textarea>
+        <br>
+        <button id="btnToevoegen">Toevoegen</button>
+        <br>
+        <label for="txtVerwijder">Delete number</label>
+        <br>
+        <input type="text" name="txtVerwijder" id="txtVerwijder">
+        <br>
+        <button id="btnDelete">Delete</button>
+        <br>
+
+        <ul id="listToDo">
+        </ul>
+
+    <script>
+        var title = document.getElementById("txtTitle");
+        var todoVerwijder = document.getElementById("txtVerwijder");
+        var todo = document.getElementById("txtToDo");
+        var ul = document.getElementById("listToDo");
+
+        var button = document.getElementById("btnToevoegen");
+        button.addEventListener("click",toevoegen);
+
+        var btnDelete = document.getElementById("btnDelete");
+        btnDelete.addEventListener("click",deleteToDo);
+
+        var html = "";
+
+        var lijst = [];
+        console.log(lijst);
+
+        function deleteToDo(){
+            //optie1
+            //var remove_me = document.querySelector(".list-item-" + todoVerwijder.value)
+
+            //optie2
+            var remove_me = document.querySelector("li:nth-child("+todoVerwijder.value+")");
+            remove_me.parentNode.removeChild(remove_me);
+        }
+
+        function toevoegen(){
+            var inputTitle = title.value;
+            var inputToDo = todo.value;
+
+            var newTodo = {title: inputTitle, todo:inputToDo};
+            lijst.push(newTodo);
+
+            lijstUpdaten();
+        }
+
+        function getPosition(evt){
+            console.log("Position: " + evt.target.indexParam);
+        }
+
+        function lijstUpdaten(){
+
+            ul.innerHTML = "";
+            var index = 0;
+            
+            for(i=0;i<lijst.length;i++){
+                var newLi = document.createElement("li");
+                newLi.setAttribute("class","list-item-"+index);
+
+                var titleSpan = document.createElement("SPAN");
+                titleSpan.setAttribute("class","strongSpan");
+                var titleText  = document.createTextNode(lijst[i].title);
+                titleSpan.appendChild(titleText);
+
+                var todoSpan = document.createElement("SPAN");
+                var todoText  = document.createTextNode(" " + lijst[i].todo);
+                todoSpan.appendChild(todoText);
+
+                var btnPosition = document.createElement("button");
+                var btnText  = document.createTextNode("Get Position");
+                btnPosition.appendChild(btnText);
+
+                btnPosition.addEventListener("click",getPosition);
+                btnPosition.indexParam = index;
+
+                newLi.appendChild(titleSpan);
+                newLi.appendChild(todoSpan);
+                newLi.appendChild(btnPosition);
+
+                ul.appendChild(newLi);
+
+                index++;
+
+                var test = ul.lastElementChild;
+            }
+            
+            title.value ="";
+            todo.value = "";
+        }
+    </script>
+    
+</body>
+</html>
